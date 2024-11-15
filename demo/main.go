@@ -1,32 +1,22 @@
 package main
 
-import (
-	"fmt"
-)
-
-type myStruct struct{ i int }
-
-var v myStruct
-var p *myStruct
-
-type struct1 struct {
-	i1  int
-	f1  float32
-	str string
-}
+import "fmt"
 
 func main() {
-
-	ms := &struct1{10, 15.5, "Joe biden"}
-
-	ms = new(struct1)
-	ms.i1 = 10
-	ms.f1 = 15.5
-	ms.str = "Chris"
-	ms2 := struct1{3, 4, "haha"}
-
-	fmt.Printf("The int is: %d\n", ms2.i1)
-	fmt.Printf("The float is: %f\n", ms2.f1)
-	fmt.Printf("The string is: %s\n", ms2.str)
-	fmt.Println(ms2)
+	map1 := make(map[int]string)
+	map1[1] = "Monday"
+	map1[2] = "Tuesday"
+	map1[3] = "Wendesday"
+	map1[4] = "Tursday"
+	map1[5] = "Friday"
+	map1[6] = "Saturday"
+	map1[0] = "Sunday"
+	for key := range map1 {
+		if value, ok := map1[key]; ok {
+			if value == "Tuesday" {
+				fmt.Println("has Tuesday")
+			}
+			fmt.Println("day", value)
+		}
+	}
 }
