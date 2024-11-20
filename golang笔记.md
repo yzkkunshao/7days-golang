@@ -124,3 +124,60 @@ new() 和 make() 的区别
 new(T) 为每个新的类型 T 分配一片内存，初始化为 0 并且返回类型为 *T 的内存地址：这种方法 返回一个指向类型为 T，值为 0 的地址的指针，它适用于值类型如数组和结构体（参见第 10 章）；它相当于 &T{}。
 make(T) 返回一个类型为 T 的初始值，它只适用于 3 种内建的引用类型：切片、map 和 channel（参见第 8 章和第 13 章）。
 换言之，new() 函数分配内存，make() 函数初始化；
+
+```go
+package main
+
+type Foo map[string]string
+type Bar struct {
+    thingOne string
+    thingTwo int
+}
+
+func main() {
+    // OK
+    y := new(Bar)
+    (*y).thingOne = "hello"
+    (*y).thingTwo = 1
+
+    // NOT OK
+    z := make(Bar) // 编译错误：cannot make type Bar
+    (*z).thingOne = "hello"
+    (*z).thingTwo = 1
+
+    // OK
+    x := make(Foo)
+    x["x"] = "goodbye"
+    x["y"] = "world"
+
+    // NOT OK
+    u := new(Foo)
+    (*u)["x"] = "goodbye" // 运行时错误!! panic: assignment to entry in nil map
+    (*u)["y"] = "world"
+}
+
+
+ ```
+
+ 可以看到结构体可以new，但不能make，直接无法编译，map则相反，不可以new，new会触发运行时错误，make是可以的
+
+
+ 结构体
+```go
+package main
+
+import "fmt"
+
+type innerS struct {
+	in1 int
+	in2 int
+}
+
+type outerS struct {
+	b    int
+	c    float32
+	int  // anonymous field
+	innerS //anonymous field
+}
+```
+ 通过类型 outer.int 的名字来获取存储在匿名字段中的数据，于是可以得出一个结论：在一个结构体中对于每一种数据类型只能有一个匿名字段。

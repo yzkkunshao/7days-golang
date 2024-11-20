@@ -2,21 +2,25 @@ package main
 
 import "fmt"
 
+type innerS struct {
+	in1 int
+	in2 int
+}
+
+type outerS struct {
+	b      int
+	c      float32
+	int    int // anonymous field
+	innerS     //anonymous field
+}
+
+type demo struct {
+	a float32
+	float32
+	string
+}
+
 func main() {
-	map1 := make(map[int]string)
-	map1[1] = "Monday"
-	map1[2] = "Tuesday"
-	map1[3] = "Wendesday"
-	map1[4] = "Tursday"
-	map1[5] = "Friday"
-	map1[6] = "Saturday"
-	map1[0] = "Sunday"
-	for key := range map1 {
-		if value, ok := map1[key]; ok {
-			if value == "Tuesday" {
-				fmt.Println("has Tuesday")
-			}
-			fmt.Println("day", value)
-		}
-	}
+	demoInstance := demo{2.1, 33, "hi"}
+	fmt.Println("demoInstance is:", demoInstance)
 }
