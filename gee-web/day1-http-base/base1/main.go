@@ -16,6 +16,8 @@ func main() {
 	http.HandleFunc("/", indexHandler)
 	http.HandleFunc("/hello", helloHandler)
 	log.Fatal(http.ListenAndServe(":9999", nil))
+	fmt.Println("has alreday started!")
+	fmt.Println("has alreday started!")
 }
 
 // handler echoes r.URL.Path

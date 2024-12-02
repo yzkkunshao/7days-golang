@@ -71,6 +71,8 @@ rune == int32 表示Unicode(UTF-8)码点
 
 %n.mg 用于表示数字 n 并精确到小数点后 m 位，除了使用 g 之外，还可以使用 e 或者 f，例如：使用格式化字符串 %5.2e 来输出 3.4 的结果为 3.40e+00。
 
+%q 占位符，用于格式化字符串时，将值用双引号包裹起来，并对特殊字符进行转义。这使得输出的字符串可以直接作为 Go 语言的字符串字面量使用。
+
 fmt.Println跟println调用后的打印结果不同
 
 ```go
@@ -181,3 +183,58 @@ type outerS struct {
 }
 ```
  通过类型 outer.int 的名字来获取存储在匿名字段中的数据，于是可以得出一个结论：在一个结构体中对于每一种数据类型只能有一个匿名字段。
+
+``` go
+ type Person interface {
+	getName() string
+}
+
+type Student struct {
+	name string
+	age  int
+}
+
+func (stu *Student) getName() string {
+	return stu.name
+}
+
+type Worker struct {
+	name   string
+	gender string
+}
+
+func (w *Worker) getName() string {
+	return w.name
+}
+
+func main() {
+	var p Person = &Student{
+		name: "Tom",
+		age:  18,
+	}
+
+	fmt.Println(p.getName()) // Tom
+}
+``` 
+Go 语言中，并不需要显式地声明实现了哪一个接口，只需要直接实现该接口对应的方法即可。
+实例化 Student后，强制类型转换为接口类型 Person。
+
+但是删除 (*Worker).getName() 程序并不会报错，因为我们并没有在 main 函数中使用。这种情况下我们如何确保某个类型实现了某个接口的所有方法呢？一般可以使用下面的方法进行检测，如果实现不完整，编译期将会报错。
+
+```go
+var _ Person = (*Student)(nil)
+var _ Person = (*Worker)(nil)
+
+// 接口转化为实例
+func main() {
+	var p Person = &Student{
+		name: "Tom",
+		age:  18,
+	}
+
+	stu := p.(*Student) // 接口转为实例
+	fmt.Println(stu.getAge())
+}
+
+```
+实例化后赋值给接口类型，查看该实例是否完全实现该接口
