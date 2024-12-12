@@ -4,7 +4,12 @@ import (
 	"fmt"
 )
 
-func main() {
+type Engine struct {
+	a string
+}
 
-	fmt.Println(add(3, 4))
+func main() {
+	c := &Engine{"haha"}
+	t := []*Engine{c}
+	fmt.Println(t)
 }

@@ -240,3 +240,85 @@ func main() {
 
 ```
 实例化后赋值给接口类型，查看该实例是否完全实现该接口
+
+
+结构体：
+有区别吗？
+```go
+type Base struct {
+  Name string
+}
+type Derived struct {
+  Base
+  Age int
+}
+和
+type Base struct {
+  Name string
+}
+
+type Derived struct {
+  *Base
+  Age int
+}
+```
+
+
+
+是的，这两个 Derived 结构体的定义是有区别的。
+
+1. 嵌入类型（Embedded Type）
+
+type Derived struct { Base Age int }
+
+这里 Base 是一个嵌入类型。
+Derived 结构体直接包含了 Base 结构体的所有字段和方法。
+访问 Base 结构体的字段时，可以直接通过 derived.Name 访问，无需使用点号两次。
+2. 嵌入类型指针（Embedded Type Pointer）
+
+type Derived struct { *Base Age int }
+
+这里 *Base 是一个指向 Base 结构体的指针。
+Derived 结构体包含了一个指向 Base 结构体的指针。
+访问 Base 结构体的字段时，需要通过指针来访问，例如 derived.Base.Name。
+示例
+
+
+```go
+package main
+
+import "fmt"
+
+type Base struct {
+        Name string
+}
+
+type Derived1 struct {
+        Base
+        Age  int
+}
+
+type Derived2 struct {
+        *Base
+        Age  int
+}
+
+func main() {
+        d1 := Derived1{Base: Base{"Alice"}, Age: 30}
+        fmt.Println(d1.Name) // 输出：Alice
+
+        b := &Base{"Bob"}
+        d2 := Derived2{Base: b, Age: 25}
+        fmt.Println(d2.Base.Name) // 输出：Bob
+}
+```
+
+区别总结
+
+访问方式不同： 嵌入类型可以直接访问字段，嵌入类型指针需要通过指针来访问。
+内存占用： 嵌入类型直接包含了 Base 结构体的数据，而嵌入类型指针只包含了一个指针，节省了内存空间，但增加了访问的复杂性。
+修改影响：
+嵌入类型：修改 Derived 的实例会直接影响到 Base 结构体中的字段。
+嵌入类型指针：修改 Derived 的实例不会直接影响到原始的 Base 结构体。
+
+Go 没有传统的类继承，但通过嵌套结构体，可以实现类似继承的效果。嵌套的 RouterGroup 结构体的所有方法和字段都可以被 Engine 结构体直接访问
