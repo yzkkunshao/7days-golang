@@ -5,4 +5,4 @@ tmp
 *.db
 *.sum
 
-**/go.mod
+*/**/go.mod
