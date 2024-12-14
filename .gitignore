@@ -6,3 +6,4 @@ tmp
 *.sum
 
 **/go.mod
+*.mod

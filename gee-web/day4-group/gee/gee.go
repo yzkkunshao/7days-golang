@@ -18,9 +18,9 @@ type (
 	}
 
 	Engine struct {
-		*RouterGroup
-		router *router
-		groups []*RouterGroup // store all groups
+		*RouterGroup // 嵌套结构体指针 可以通过engine.xxx来访问RouterGroup的方法
+		router       *router
+		groups       []*RouterGroup // store all groups
 	}
 )
 

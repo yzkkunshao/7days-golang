@@ -1,0 +1,1 @@
+接收w http.ResponseWriter和req *http.request包装成上下文，每次HTTP请求发出后，随着HTTP会话产生一个上下文，所有响应和返回值处理都封装在上下文Context中
